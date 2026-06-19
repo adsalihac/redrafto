@@ -114,17 +114,23 @@ export const defaultOptions: RefinementOptions = {
   voice: true
 };
 
-export const sampleDraft = `In today's fast-paced digital landscape, developers need to leverage artificial intelligence to enhance productivity and streamline workflows. AI tools can help teams write code faster, improve collaboration, and unlock new opportunities for innovation.
+export const sampleDraft = `We are thrilled and excited to announce the general availability of our all-new analytics platform, which we believe will be an absolute game-changer for data teams everywhere.
 
-Furthermore, it is important to note that adopting AI is not just about automation. It is about creating scalable systems that empower teams to deliver robust solutions in a seamless way. Companies that embrace this transformation will gain a competitive advantage.
+Our platform leverages cutting-edge technology to help organizations unlock the full potential of their data. With real-time dashboards, customizable reports, and seamless integration with existing tools, it is designed to streamline workflows and drive actionable insights.
 
-In conclusion, AI is a game-changer for software development. By using the right tools, developers can achieve better outcomes and create more value for their organizations.`;
+It is important to note that data teams currently spend way too much time on manual data preparation and not enough time on actual analysis. This leads to missed opportunities. Our platform solves this pain point.
 
-export const sampleRefined = `The first time our team used AI in a real shipping cycle, it did not feel like a revolution. It felt like someone had quietly taken the repetitive work off the table.
+We truly believe this will transform how teams interact with their data and deliver unparalleled value to our customers. We are excited to partner with our early adopters on the next phase of this journey.`;
 
-That is where the real value is. For developers, AI is strongest when it helps with the parts of the job that slow momentum: drafting tests, exploring edge cases, summarizing unfamiliar code, or turning a rough implementation idea into something the team can discuss.
+export const sampleRefined = `Today we are making Pulse Analytics generally available to everyone.
 
-The teams that benefit most will not be the ones trying to automate judgment away. They will be the ones that use AI to protect more time for judgment: clearer decisions, sharper reviews, and better software.`;
+We built Pulse because data teams were spending 60% of their time preparing data instead of analyzing it. That leaves less room for asking the right questions.
+
+Pulse connects to your stack in minutes, surfaces real-time dashboards without manual setup, and lets you share reports with one link. No SQL required for the basics, full flexibility when you need it.
+
+Early users tell us it cut their time from raw data to a shared insight by more than half. We think that is the right direction.
+
+Pulse Analytics is available starting today. Free tier included.`;
 
 const aiCliches = [
   "in today's fast-paced digital landscape",

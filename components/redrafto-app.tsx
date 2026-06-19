@@ -403,47 +403,24 @@ export function RedraftoApp() {
           </div>
 
           <form
-            className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px_minmax(0,1fr)]"
+            className="grid gap-4"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <WritingPanel
-              title="Original Content"
-              stats={originalStats}
-              action={
-                <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-                  <Eraser className="h-4 w-4" />
-                  Clear
-                </Button>
-              }
-            >
-              <EditorToolbar editor={editor} />
-              <div
-                className="medium-writing-surface markdown-body writing-preview min-h-[520px] rounded-md border border-border bg-white p-5"
-                onPaste={handleEditorPaste}
-              >
-                <EditorContent editor={editor} />
-              </div>
-            </WritingPanel>
-
-            <section className="rounded-lg border border-border bg-surface p-4">
-              <div className="mb-5 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-white">
-                  <SlidersHorizontal className="h-5 w-5 text-action" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-ink">Refinement Controls</h3>
-                  <p className="text-sm text-muted">{platformLabel(platform)} / {tone}</p>
-                </div>
+            <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface p-3">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="h-4 w-4 text-action" />
+                <span className="text-sm font-semibold text-ink whitespace-nowrap">Controls</span>
               </div>
 
-              <ControlGroup title="Platform">
-                <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-muted whitespace-nowrap">Platform:</span>
+                <div className="flex gap-1">
                   {platforms.map((item) => {
                     const field = register("platform");
                     return (
                       <label
                         className={cn(
-                          "cursor-pointer rounded-md border px-3 py-2 text-sm font-semibold transition-colors",
+                          "cursor-pointer rounded-md border px-2.5 py-1 text-xs font-semibold transition-colors",
                           platform === item.value
                             ? "border-action bg-white text-action"
                             : "border-border bg-white text-muted hover:text-ink"
@@ -468,16 +445,19 @@ export function RedraftoApp() {
                     );
                   })}
                 </div>
-              </ControlGroup>
+              </div>
 
-              <ControlGroup title="Tone">
-                <div className="grid grid-cols-2 gap-2">
+              <div className="hidden h-5 w-px bg-border md:block" />
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-muted whitespace-nowrap">Tone:</span>
+                <div className="flex gap-1">
                   {tones.map((item) => {
                     const field = register("tone");
                     return (
                       <label
                         className={cn(
-                          "cursor-pointer rounded-md border px-3 py-2 text-sm font-semibold transition-colors",
+                          "cursor-pointer rounded-md border px-2.5 py-1 text-xs font-semibold transition-colors",
                           tone === item.value
                             ? "border-ink bg-ink text-white"
                             : "border-border bg-white text-muted hover:text-ink"
@@ -502,108 +482,115 @@ export function RedraftoApp() {
                     );
                   })}
                 </div>
-              </ControlGroup>
+              </div>
 
-              <ControlGroup title="Refinement Level">
-                <div className="rounded-md border border-border bg-white p-3">
-                  <input
-                    className="w-full accent-action"
-                    type="range"
-                    min="0"
-                    max="2"
-                    step="1"
-                    value={levelToIndex(level)}
-                    {...register("levelIndex", { valueAsNumber: true })}
-                    onChange={(event) => {
-                      const next = levels[Number(event.target.value)]?.value ?? "balanced";
-                      setValue("levelIndex", Number(event.target.value));
-                      setLevel(next);
-                    }}
-                  />
-                  <div className="mt-2 grid grid-cols-3 text-xs font-semibold text-muted">
-                    {levels.map((item) => (
-                      <span
-                        className={cn(item.value === level && "text-action", "text-center")}
-                        key={item.value}
-                      >
-                        {item.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </ControlGroup>
+              <div className="hidden h-5 w-px bg-border md:block" />
 
-              <ControlGroup title="Additional Options">
-                <div className="space-y-2">
-                  {optionLabels.map((item) => {
-                    const name = `options.${item.value}` as `options.${OptionKey}`;
-                    const field = register(name);
-                    return (
-                      <label
-                        className="flex cursor-pointer items-center gap-3 rounded-md border border-border bg-white px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-ink"
-                        key={item.value}
-                      >
-                        <input
-                          className="sr-only"
-                          type="checkbox"
-                          name={field.name}
-                          ref={field.ref}
-                          checked={options[item.value]}
-                          onBlur={field.onBlur}
-                          onChange={() => {
-                            setValue(name, !options[item.value]);
-                            toggleOption(item.value);
-                          }}
-                        />
-                        <span
-                          className={cn(
-                            "flex h-5 w-5 items-center justify-center rounded border",
-                            options[item.value]
-                              ? "border-action bg-action text-white"
-                              : "border-border bg-white"
-                          )}
-                        >
-                          {options[item.value] ? <Check className="h-3.5 w-3.5" /> : null}
-                        </span>
-                        {item.label}
-                      </label>
-                    );
-                  })}
-                </div>
-              </ControlGroup>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-muted whitespace-nowrap">Level:</span>
+                <select
+                  className="rounded-md border border-border bg-white px-2 py-1 text-xs font-semibold text-ink"
+                  value={levelToIndex(level)}
+                  {...register("levelIndex", { valueAsNumber: true })}
+                  onChange={(event) => {
+                    const next = levels[Number(event.target.value)]?.value ?? "balanced";
+                    setValue("levelIndex", Number(event.target.value));
+                    setLevel(next);
+                  }}
+                >
+                  {levels.map((item, i) => (
+                    <option key={item.value} value={i}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
 
-              <Button className="mt-5 w-full" size="lg" type="submit">
+              <div className="hidden h-5 w-px bg-border md:block" />
+
+              <div className="flex flex-wrap items-center gap-1">
+                {optionLabels.map((item) => {
+                  const name = `options.${item.value}` as `options.${OptionKey}`;
+                  const field = register(name);
+                  return (
+                    <label
+                      className={cn(
+                        "flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-semibold transition-colors",
+                        options[item.value]
+                          ? "border-action bg-action/10 text-action"
+                          : "border-border bg-white text-muted hover:text-ink"
+                      )}
+                      key={item.value}
+                    >
+                      <input
+                        className="sr-only"
+                        type="checkbox"
+                        name={field.name}
+                        ref={field.ref}
+                        checked={options[item.value]}
+                        onBlur={field.onBlur}
+                        onChange={() => {
+                          setValue(name, !options[item.value]);
+                          toggleOption(item.value);
+                        }}
+                      />
+                      {item.label}
+                    </label>
+                  );
+                })}
+              </div>
+
+              <Button className="ml-auto" size="sm" type="submit">
                 <NotebookPen className="h-4 w-4" />
-                Redraft Content
+                Redraft
               </Button>
-            </section>
+            </div>
 
-            <WritingPanel
-              title="Refined Content"
-              stats={refinedStats}
-              action={
-                <div className="flex flex-wrap gap-2">
-                  <IconButton label="Copy" onClick={copyRefined}>
-                    <Copy className="h-4 w-4" />
-                  </IconButton>
-                  <IconButton label="Regenerate" onClick={runRedraft}>
-                    <RefreshCw className="h-4 w-4" />
-                  </IconButton>
-                  <IconButton label="Export Markdown" onClick={exportMarkdown}>
-                    <FileDown className="h-4 w-4" />
-                  </IconButton>
-                  <IconButton label="Export TXT" onClick={exportTxt}>
-                    <Download className="h-4 w-4" />
-                  </IconButton>
+            <div className="grid gap-4 xl:grid-cols-2">
+              <WritingPanel
+                title="Original Content"
+                stats={originalStats}
+                action={
+                  <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+                    <Eraser className="h-4 w-4" />
+                    Clear
+                  </Button>
+                }
+              >
+                <EditorToolbar editor={editor} />
+                <div
+                  className="medium-writing-surface markdown-body writing-preview min-h-[520px] rounded-md border border-border bg-white p-5"
+                  onPaste={handleEditorPaste}
+                >
+                  <EditorContent editor={editor} />
                 </div>
-              }
-            >
-              <MarkdownPreview
-                className="medium-writing-surface min-h-[520px] rounded-md border border-border bg-white p-5"
-                emptyText="Your refined draft will appear here after generation."
-                markdown={refined}
-              />
-            </WritingPanel>
+              </WritingPanel>
+
+              <WritingPanel
+                title="Refined Content"
+                stats={refinedStats}
+                action={
+                  <div className="flex flex-wrap gap-2">
+                    <IconButton label="Copy" onClick={copyRefined}>
+                      <Copy className="h-4 w-4" />
+                    </IconButton>
+                    <IconButton label="Regenerate" onClick={runRedraft}>
+                      <RefreshCw className="h-4 w-4" />
+                    </IconButton>
+                    <IconButton label="Export Markdown" onClick={exportMarkdown}>
+                      <FileDown className="h-4 w-4" />
+                    </IconButton>
+                    <IconButton label="Export TXT" onClick={exportTxt}>
+                      <Download className="h-4 w-4" />
+                    </IconButton>
+                  </div>
+                }
+              >
+                <MarkdownPreview
+                  className="medium-writing-surface min-h-[520px] rounded-md border border-border bg-white p-5"
+                  emptyText="Your refined draft will appear here after generation."
+                  markdown={refined}
+                />
+              </WritingPanel>
+            </div>
           </form>
         </div>
       </section>
@@ -853,21 +840,6 @@ function IconButton({
     >
       {children}
     </Button>
-  );
-}
-
-function ControlGroup({
-  title,
-  children
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <fieldset className="mt-5">
-      <legend className="mb-2 text-sm font-semibold text-ink">{title}</legend>
-      {children}
-    </fieldset>
   );
 }
 
