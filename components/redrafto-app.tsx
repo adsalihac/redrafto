@@ -129,7 +129,7 @@ export function RedraftoApp() {
     restoreVersion,
     clear
   } = useRedraftoStore();
-  const [comparePosition, setComparePosition] = useState(55);
+  const [comparePosition, setComparePosition] = useState(32);
 
   const { register, handleSubmit, setValue } = useForm<ControlsForm>({
     defaultValues: {
@@ -142,6 +142,37 @@ export function RedraftoApp() {
 
   const originalStats = useMemo(() => getWritingStats(markdownToPlainText(original)), [original]);
   const refinedStats = useMemo(() => getWritingStats(markdownToPlainText(refined)), [refined]);
+  const heroOriginal = useMemo(
+    () => markdownToPlainText(original).trim() || markdownToPlainText(sampleDraft),
+    [original]
+  );
+  const heroRefined = useMemo(
+    () => markdownToPlainText(refined).trim() || markdownToPlainText(sampleRefined),
+    [refined]
+  );
+
+  useEffect(() => {
+    let direction = 1;
+    const interval = window.setInterval(() => {
+      setComparePosition((current) => {
+        const next = current + direction * 3;
+
+        if (next >= 86) {
+          direction = -1;
+          return 86;
+        }
+
+        if (next <= 28) {
+          direction = 1;
+          return 28;
+        }
+
+        return next;
+      });
+    }, 120);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -326,43 +357,30 @@ export function RedraftoApp() {
                 <p className="text-sm font-semibold text-ink">Live comparison</p>
                 <p className="text-sm text-muted">AI draft to Redrafto output</p>
               </div>
-              <span className="rounded-md bg-surface px-2.5 py-1 text-xs font-semibold text-muted">
-                {comparePosition}% refined
-              </span>
+
             </div>
             <div className="relative min-h-[390px] overflow-hidden rounded-md border border-border bg-white">
               <div className="absolute inset-0 p-6">
                 <Snippet
                   eyebrow="AI Draft"
-                  title="Generic draft"
-                  body={sampleDraft}
+                  title="Current input"
+                  body={heroOriginal}
                   muted
                 />
               </div>
               <div
-                className="absolute inset-0 overflow-hidden border-r border-action bg-white"
+                className="absolute inset-0 overflow-hidden border-r border-action bg-white transition-[clip-path] duration-150 ease-out"
                 style={{ clipPath: `inset(0 ${100 - comparePosition}% 0 0)` }}
               >
                 <div className="w-[calc(100vw-3rem)] max-w-[552px] p-6">
                   <Snippet
                     eyebrow="Redrafto Output"
-                    title="Publication-ready"
-                    body={sampleRefined}
+                    title="Current output"
+                    body={heroRefined}
                   />
                 </div>
               </div>
             </div>
-            <label className="mt-4 block">
-              <span className="sr-only">Adjust comparison</span>
-              <input
-                className="w-full accent-action"
-                type="range"
-                min="25"
-                max="85"
-                value={comparePosition}
-                onChange={(event) => setComparePosition(Number(event.target.value))}
-              />
-            </label>
           </motion.div>
         </div>
       </section>
