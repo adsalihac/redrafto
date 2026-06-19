@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+  --color-background: #ffffff;
+  --color-surface: #fafafa;
+  --color-ink: #111827;
+  --color-muted: #4b5563;
+  --color-border: #e5e7eb;
+  --color-action: #2563eb;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+}
+
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --surface: #fafafa;
+  --ink: #111827;
+  --muted: #4b5563;
+  --border: #e5e7eb;
+  --action: #2563eb;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(250, 250, 250, 0.84) 0%, rgba(255, 255, 255, 0) 36rem),
+    var(--background);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01" 1, "cv05" 1, "kern" 1;
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.18);
+}
+
+.editor-shell .ProseMirror {
+  min-height: 440px;
+  outline: none;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.medium-writing-surface {
+  box-shadow: inset 0 1px 0 rgba(17, 24, 39, 0.02);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.medium-writing-surface:focus-within {
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08),
+    inset 0 1px 0 rgba(17, 24, 39, 0.02);
+}
+
+.editor-shell .ProseMirror h1,
+.editor-shell .ProseMirror h2,
+.editor-shell .ProseMirror h3 {
+  margin: 1.4rem 0 0.75rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.editor-shell .ProseMirror h1 {
+  font-size: 36px;
+}
+
+.editor-shell .ProseMirror h2 {
+  font-size: 28px;
+}
+
+.editor-shell .ProseMirror h3 {
+  font-size: 22px;
+}
+
+.editor-shell .ProseMirror p {
+  margin: 0 0 1.2rem;
+}
+
+.editor-shell .ProseMirror > *:first-child {
+  margin-top: 0;
+}
+
+.editor-shell .ProseMirror ul,
+.editor-shell .ProseMirror ol {
+  margin: 0 0 1.2rem 1.5rem;
+  padding: 0;
+}
+
+.editor-shell .ProseMirror li {
+  margin: 0.35rem 0;
+}
+
+.editor-shell .ProseMirror blockquote {
+  margin: 1.4rem 0;
+  border-left: 3px solid var(--border);
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.editor-shell .ProseMirror code,
+.markdown-body code {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #f3f4f6;
+  padding: 0.12rem 0.35rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.88em;
+}
+
+.editor-shell .ProseMirror pre,
+.markdown-body pre {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #111827;
+  color: #f9fafb;
+  padding: 1rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.editor-shell .ProseMirror pre code,
+.markdown-body pre code {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.editor-shell .ProseMirror p.is-editor-empty:first-child::before {
+  color: #9ca3af;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.writing-preview {
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.writing-preview p {
+  margin: 0 0 1.2rem;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  margin: 1.4rem 0 0.75rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.markdown-body h1:first-child,
+.markdown-body h2:first-child,
+.markdown-body h3:first-child {
+  margin-top: 0;
+}
+
+.markdown-body h1 {
+  font-size: 36px;
+}
+
+.markdown-body h2 {
+  font-size: 28px;
+}
+
+.markdown-body h3 {
+  font-size: 22px;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0 0 1.2rem 1.5rem;
+  padding: 0;
+}
+
+.markdown-body li {
+  margin: 0.35rem 0;
+  padding-left: 0.15rem;
+}
+
+.markdown-body blockquote {
+  margin: 1.5rem 0;
+  border-left: 3px solid var(--border);
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.medium-writing-surface .editor-shell,
+.medium-writing-surface .ProseMirror {
+  width: 100%;
+}
+
+.paper-grid {
+  background-image:
+    linear-gradient(rgba(17, 24, 39, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
