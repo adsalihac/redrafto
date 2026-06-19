@@ -114,7 +114,6 @@ export function RedraftoApp() {
     setPlatform,
     setTone,
     setLevel,
-    toggleOption,
     redraft,
     saveDraft,
     loadDraft,
@@ -176,6 +175,15 @@ export function RedraftoApp() {
     editorProps: {
       attributes: {
         class: "editor-shell"
+      },
+      handlePaste: (_view, event) => {
+        const text = event.clipboardData?.getData("text/plain");
+        if (text && looksLikeMarkdown(text)) {
+          event.preventDefault();
+          editor?.chain().focus().insertContent(markdownToHtml(text)).run();
+          return true;
+        }
+        return false;
       }
     },
     immediatelyRender: false,
@@ -289,18 +297,6 @@ export function RedraftoApp() {
     toast.message("Workspace cleared");
   };
 
-  const handleEditorPaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
-    const pastedText = event.clipboardData.getData("text/plain");
-
-    if (!editor || !looksLikeMarkdown(pastedText)) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-    editor.chain().focus().insertContent(markdownToHtml(pastedText)).run();
-  };
-
   const onSubmit = () => runRedraft();
 
   return (
@@ -403,10 +399,7 @@ export function RedraftoApp() {
                     }
                   >
                     <EditorToolbar editor={editor} />
-                    <div
-                      className="min-h-[440px] rounded-lg border border-border bg-white p-4"
-                      onPaste={handleEditorPaste}
-                    >
+                    <div className="min-h-[440px] rounded-lg border border-border bg-white p-4">
                       <EditorContent editor={editor} />
                     </div>
                   </WritingPanel>
@@ -543,7 +536,7 @@ function SiteHeader({
   lastSavedAt,
   formatTimestamp
 }: {
-  lastSavedAt: number | null;
+  lastSavedAt: number | undefined;
   formatTimestamp: (t: number) => string;
 }) {
   return (
@@ -578,17 +571,14 @@ function ControlsBar({
   platform,
   tone,
   level,
-  options,
   register,
   platforms,
   tones,
   levels,
-  optionLabels,
   setValue,
   setPlatform,
   setTone,
   setLevel,
-  toggleOption,
   levelToIndex
 }: {
   platform: Platform;
